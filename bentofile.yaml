@@ -1,0 +1,14 @@
+service: "service.py:FoodGenius"
+name: foodgenius-service
+labels:
+  owner: daviaraujocc
+  project: foodgenius
+include:
+  - "*.py"
+  - "*.txt"
+  - "models/*.pth"
+python:
+  requirements_txt: "./requirements/cpu-requirements.txt"
+docker:
+  dockerfile_template: ./Dockerfile.template
+  python_version: 3.11
