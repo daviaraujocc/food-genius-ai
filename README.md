@@ -75,6 +75,12 @@ curl -X POST \
   -F "img=@examples/images/pizza.jpg"
 ```
 
+## 🤗 Hugging Face App 🤗
+
+You can also try out the FoodGeniusAI application on Hugging Face Spaces:
+
+[FoodGeniusAI on Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
+
 ## 🚀 Deploying to kubernetes 🚀
 
 To deploy the service to production, you can use the following commands:

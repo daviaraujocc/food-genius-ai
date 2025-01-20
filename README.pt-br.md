@@ -2,7 +2,7 @@
     <h1 align="center">Food Genius AI</h1>
     <br>
     <strong>Uma aplicação poderosa de IA construída usando EfficientNetB2 que pode detectar o tipo de alimento em uma imagem e determinar se a imagem contém alimento ou não.<br></strong>
-    <i>Desenvolvido por BentoML 🍱</i>
+    <i>Desenvolvido com BentoML 🍱</i>
     <br>
 </div>
 <br>
@@ -73,6 +73,12 @@ curl -X POST \
   -H "Content-Type: multipart/form-data" \  
   -F "img=@examples/images/pizza.jpg"
 ```
+
+## 🤗 Aplicativo no Hugging Face 🤗
+
+Você também pode experimentar a aplicação FoodGeniusAI no Hugging Face Spaces:
+
+[FoodGeniusAI no Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
 
 ## 🚀 Deploy para o kubernetes 🚀
 
