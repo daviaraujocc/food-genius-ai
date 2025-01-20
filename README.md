@@ -50,6 +50,8 @@ To run the service in a container, you can use the following commands:
 bentoml build -f bentofile.yaml
 ```
 
+> Executing this command will create on your home the directory `bentoml` with the service files.
+
 ```bash
 bentoml containerize foodgenius-service
 ```
@@ -73,20 +75,49 @@ curl -X POST \
   -F "img=@examples/images/pizza.jpg"
 ```
 
-## 🚀 Deploying to Production 🚀
+## 🚀 Deploying to kubernetes 🚀
 
-
-
+To deploy the service to production, you can use the following commands:
 
 ```bash
-bentoml build
+bentoml build -f bentofile.yaml
+```
+
+```bash
+bentoml containerize foodgenius-service:latest --image-tag {your-username-repo}/foodgenius-service:latest
+```
+
+```bash
+docker push {your-username-repo}/foodgenius-service:latest
+```
+
+Edit the `manifests/deployment.yaml` file to include your image, then apply it to your Kubernetes cluster:
+```bash
+kubectl apply -f manifests/deployment.yaml
 ```
 
 
+## 📓 Jupyter Notebooks 📓
 
-```bash
-bentoml push <name:version>
-```
+This repository includes several Jupyter Notebooks that demonstrate the training and prediction processes using EfficientNetB2.
+
+### Training Notebooks
+
+1. **EfficientNetB2 Training for Food or Non-Food Classification**
+    - File: [effnetb2_training_food_or_nonfood.ipynb](effnetb2_training_food_or_nonfood.ipynb)
+    - Description: This notebook trains a model on Food5K to classify images as either food or non-food using the EfficientNetB2 architecture.
+
+2. **EfficientNetB2 Training for Food101 Dataset**
+    - File: [effnetb2_training_food101.ipynb](effnetb2_training_food101.ipynb)
+    - Description: This notebook trains a model on the Food101 dataset to classify different types of food using the EfficientNetB2 architecture.
+
+### Prediction Notebook
+
+1. **EfficientNetB2 Prediction**
+    - File: [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
+    - Description: This notebook demonstrates how to use the trained EfficientNetB2 model to make predictions on new images.
+
+Feel free to explore these notebooks to understand the training and prediction workflows in detail.
 
 ## 📝 Author
 **Davi Araujo (@daviaraujocc)**
