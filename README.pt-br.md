@@ -19,10 +19,13 @@ FoodGeniusAI é uma aplicação alimentada por IA que usa EfficientNetB2 para cl
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
-## 🏃‍♂️ Executando o Serviço 🏃‍♂️
-Para aproveitar ao máximo este repositório, recomendamos que você o clone e experimente o serviço localmente.
+## 📋 Requerimentos 📋
 
-Isso requer Python 3.11+ e `pip` instalado.
+- Python 3.11+
+- BentoML
+- Pip
+
+## 🏃‍♂️ Executando o Serviço 🏃‍♂️
 
 1. Clone o repositório:
     ```bash
@@ -106,6 +109,13 @@ kubectl apply -f manifests/deployment.yaml
 
 Este repositório inclui vários Jupyter Notebooks que demonstram os processos de treinamento e predição usando EfficientNetB2.
 
+Antes de rodar os notebooks, você precisar instalar as dependências requeridas, preferencialmente usando conda ou venv:
+
+```bash
+conda env create -f environment.yml
+conda activate foodgenius
+```
+
 ### Notebooks de Treinamento
 
 1. **Treinamento EfficientNetB2 para Classificação de Alimentos ou Não-Alimentos**
@@ -122,7 +132,6 @@ Este repositório inclui vários Jupyter Notebooks que demonstram os processos d
     - Arquivo: [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
     - Descrição: Este notebook demonstra como usar o modelo EfficientNetB2 treinado para fazer predições em novas imagens.
 
-Sinta-se à vontade para explorar esses notebooks para entender os fluxos de trabalho de treinamento e predição em detalhes.
 
 ## 📝 Autor
 **Davi Araujo (@daviaraujocc)**
