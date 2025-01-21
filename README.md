@@ -230,6 +230,8 @@ kubectl apply -f observability/podmonitor.yaml
 kubectl port-forward svc/grafana -n monitoring 3000:3000
 ```
 
+![](assets/images/grafana.jpg)
+
 
 ## 📝 Author
 **Davi Araujo (@daviaraujocc)**

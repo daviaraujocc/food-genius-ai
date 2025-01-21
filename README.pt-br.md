@@ -38,6 +38,7 @@ Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados u
 - [Treinamento e Predição](#-treinamento-e-predição-)
 - [Jupyter Notebooks](#-jupyter-notebooks-)
 - [Deploy para Kubernetes](#-deploy-para-kubernetes-)
+- [Observabilidade](#-observabilidade-)
 
 ## 📋 Requisitos 📋
 
@@ -124,7 +125,7 @@ Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
     python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
     ```
 
-Resultados do processo de treinamento serão salvos no diretório `results`.
+Os resultados do processo de treinamento serão salvos no diretório `results`.
 
 ### Predição
 
@@ -132,7 +133,7 @@ Você pode fazer predições usando o script `predict.py`. Aqui estão os passos
 
 1. Predição usando o modelo `food_or_nonfood`:
     ```bash
-    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --class_names_path class_names.txt --device cpu
+    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --device cpu
     ```
 
 2. Predição usando o modelo `food101`:
@@ -187,6 +188,49 @@ Edite o arquivo `manifests/deployment.yaml` para incluir sua imagem, depois apli
 ```bash
 kubectl apply -f manifests/deployment.yaml
 ```
+
+## 📊 Observabilidade 📊
+
+BentoML fornece recursos de observabilidade integrados, incluindo métricas do Prometheus. Você pode acessar essas métricas no endpoint `/metrics`.
+
+Para ter um stack de monitoramento no Kubernetes, você pode seguir os seguintes passos:
+
+1. Instale o Prometheus Operator
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update prometheus-community
+
+helm install prometheus prometheus-community/kube-prometheus-stack \
+-f ./observability/prometheus-values.yaml \
+--namespace monitoring --create-namespace
+```
+
+2. Instale o Grafana
+
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update grafana
+
+helm install grafana grafana/grafana \
+-f ./observability/grafana-values.yaml \
+--namespace monitoring --create-namespace
+``` 
+
+3. Aplique as dependências
+
+```bash
+kubectl apply -f observability/podmonitor.yaml
+```
+
+4. Verifique no Grafana
+
+```bash
+kubectl port-forward svc/grafana -n monitoring 3000:3000
+```
+
+![](assets/images/grafana.jpg)
+
 
 ## 📝 Autor
 **Davi Araujo (@daviaraujocc)**
