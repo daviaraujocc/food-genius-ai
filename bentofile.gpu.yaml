@@ -3,6 +3,18 @@ name: foodgenius-service-gpu
 labels:
   owner: daviaraujocc
   project: foodgenius
+description: |
+    ## 🍽️ FoodGeniusAI: Your AI-Powered Food Classifier 🍽️
+
+    FoodGeniusAI is a powerful AI application built using EfficientNetB2 and PyTorch. It can detect the type of food in an image and determine whether the image contains food or not. 
+
+    ### Key Features:
+    - **Food or Non-Food Classification**: Using the Food5K dataset.
+    - **Food101 Classification**: Identifying 101 different types of food.
+
+    > This version leverages CUDA for faster processing on compatible GPUs.
+
+    > Try it out on [Hugging Face Spaces](https://huggingface.co/spaces/daviaraujocc/foodgeniusai) and explore the code on [GitHub](https://github.com/daviaraujocc/FoodGeniusAI)!
 include:
   - "*.py"
   - "*.txt"
@@ -10,6 +22,9 @@ include:
 python:
   requirements_txt: "./requirements/gpu-requirements.txt"
 docker:
-  cuda_version: 12.6
+  cuda_version: 12.1
   dockerfile_template: ./Dockerfile.template
   python_version: 3.11
+envs:
+  - name: BENTOML_DEVICE
+    value: "cuda"

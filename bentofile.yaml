@@ -3,6 +3,16 @@ name: foodgenius-service
 labels:
   owner: daviaraujocc
   project: foodgenius
+description: |
+    ## 🍽️ FoodGeniusAI: Your AI-Powered Food Classifier 🍽️
+
+    FoodGeniusAI is a powerful AI application built using EfficientNetB2 and PyTorch. It can detect the type of food in an image and determine whether the image contains food or not. 
+
+    ### Key Features:
+    - **Food or Non-Food Classification**: Using the Food5K dataset.
+    - **Food101 Classification**: Identifying 101 different types of food.
+
+    > Try it out on [Hugging Face Spaces](https://huggingface.co/spaces/daviaraujocc/foodgeniusai) and explore the code on [GitHub](https://github.com/daviaraujocc/FoodGeniusAI)!
 include:
   - "*.py"
   - "*.txt"
@@ -12,3 +22,6 @@ python:
 docker:
   dockerfile_template: ./Dockerfile.template
   python_version: 3.11
+envs:
+  - name: BENTOML_DEVICE
+    value: "cpu"
