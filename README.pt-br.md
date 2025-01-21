@@ -124,18 +124,20 @@ Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
     python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
     ```
 
+Resultados do processo de treinamento serão salvos no diretório `results`.
+
 ### Predição
 
 Você pode fazer predições usando o script `predict.py`. Aqui estão os passos:
 
 1. Predição usando o modelo `food_or_nonfood`:
     ```bash
-    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --class_names_path class_names.txt --device cuda
+    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --class_names_path class_names.txt --device cpu
     ```
 
 2. Predição usando o modelo `food101`:
     ```bash
-    python predict.py --model food101 --image path/to/image.jpg --model_path models/pretrained_effnetb2_food101.pth --class_names_path class_names.txt --device cuda
+    python predict.py --model food101 --image path/to/image.jpg --model_path models/pretrained_effnetb2_food101.pth --class_names_path class_names.txt --device cpu
     ```
 
 ## 📓 Jupyter Notebooks 📓
