@@ -188,5 +188,47 @@ Edit the `manifests/deployment.yaml` file to include your image, then apply it t
 kubectl apply -f manifests/deployment.yaml
 ```
 
+## 📊 Observability 📊
+
+BentoML provides built-in observability features, including Prometheus metrics. You can access these metrics at the `/metrics` endpoint.
+
+To have monitoring stack on kubernetes, you can do the following steps:
+
+
+1. Install Prometheus Operator
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update prometheus-community
+
+helm install prometheus prometheus-community/kube-prometheus-stack \
+-f ./observability/prometheus-values.yaml \
+--namespace monitoring --create-namespace
+```
+
+2. Install Grafana
+
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update grafana
+
+helm install grafana grafana/grafana \
+-f ./observability/grafana-values.yaml \
+--namespace monitoring --create-namespace
+``` 
+
+3. Apply dependencies
+
+```bash
+kubectl apply -f observability/podmonitor.yaml
+```
+
+4. Check on Grafana
+
+```bash
+kubectl port-forward svc/grafana -n monitoring 3000:3000
+```
+
+
 ## 📝 Author
 **Davi Araujo (@daviaraujocc)**
