@@ -38,6 +38,7 @@ Both models are based on the EfficientNetB2 architecture and were trained using 
 - [Training and Prediction](#-training-and-prediction-)
 - [Jupyter Notebooks](#-jupyter-notebooks-)
 - [Deploying to Kubernetes](#-deploying-to-kubernetes-)
+- [Observability](#-observability-)
 
 ## 📋 Requirements 📋
 
