@@ -1,5 +1,6 @@
 # Ignore data directory and zip files
 data/
+results/
 *.zip
 
 # Byte-compiled / optimized / DLL files
