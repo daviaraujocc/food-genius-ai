@@ -2,16 +2,23 @@ name: foodgenius
 channels:
   - pytorch
   - nvidia
+  - conda-forge
 dependencies:
   - python=3.11
   - pip
   - numpy>=1.20
   - pillow=8.3.1
   - scipy=1.7.1
-  - pytorch=1.9.1
-  - cudatoolkit=11.1
+  - pytorch=2.3.0
+  - cudatoolkit=12.6
   - requests=2.26.0
-  - tqdm=4.62.2
-  - matplotlib=3.4.2
   - tqdm=4.65.0
+  - matplotlib=3.4.2
   - torchvision=0.18.0
+  - certifi
+  - python-slugify
+  - text-unidecode
+  - bleach
+  - webencodings
+  - pip:
+      - kaggle
