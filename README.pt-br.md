@@ -2,7 +2,7 @@
     <h1 align="center">Food Genius AI</h1>
     <br>
     <strong>Uma aplicação poderosa de IA construída usando EfficientNetB2 que pode detectar o tipo de alimento em uma imagem e determinar se a imagem contém alimento ou não.<br></strong>
-    <i>Desenvolvido com BentoML 🍱</i>
+    <i>Desenvolvido com BentoML 🍱 e PyTorch 🔥</i>
     <br>
 </div>
 <br>
@@ -19,13 +19,34 @@ FoodGeniusAI é uma aplicação alimentada por IA que usa EfficientNetB2 para cl
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
-## 📋 Requerimentos 📋
+### 📊 Modelos 📊
+FoodGeniusAI usa dois modelos principais para classificação:
+
+1. **Modelo Alimento ou Não-Alimento (Food5K)**
+    - Este modelo classifica imagens como alimento ou não-alimento usando o dataset Food5K.
+
+2. **Modelo Food101**
+    - Este modelo classifica imagens em 101 diferentes tipos de alimentos usando o dataset Food101.
+
+Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`.
+
+## Glossário
+- [Requisitos](#-requisitos-)
+- [Executando o Serviço](#-executando-o-serviço-)
+- [Usando o Serviço](#-usando-o-serviço-)
+- [Aplicativo no Hugging Face](#-aplicativo-no-hugging-face-)
+- [Treinamento e Predição](#-treinamento-e-predição-)
+- [Jupyter Notebooks](#-jupyter-notebooks-)
+- [Deploy para Kubernetes](#-deploy-para-kubernetes-)
+
+## 📋 Requisitos 📋
 
 - Python 3.11+
 - BentoML
 - Pip
 
 ## 🏃‍♂️ Executando o Serviço 🏃‍♂️
+> Para uso de GPU, utilize `bentofile.gpu.yaml` e `requirements/gpu-requirements.txt`.
 
 1. Clone o repositório:
     ```bash
@@ -45,13 +66,15 @@ FoodGeniusAI é uma aplicação alimentada por IA que usa EfficientNetB2 para cl
 
 Você pode então abrir seu navegador em http://127.0.0.1:3000 e interagir com o serviço através do Swagger UI.
 
-### Containers
+
+### 🐳 Containers 🐳
 
 Para executar o serviço em um container, você pode usar os seguintes comandos:
 
 ```bash
 bentoml build -f bentofile.yaml
 ```
+
 > Executar este comando criará no home do usuário, o diretório `bentoml` com os arquivos do serviço.
 
 ```bash
@@ -62,7 +85,7 @@ bentoml containerize foodgenius-service
 docker run -p 3000:3000 foodgenius-service:$(bentoml get foodgenius-service:latest | yq -r ".version")
 ```
 
-> Para uso de GPU, utilize `bentofile.gpu.yaml` e `requirements/gpu-requirements.txt`.
+
 
 ## 🌐 Usando o Serviço 🌐
 Você pode usar o serviço BentoML com requisições HTTP. Aqui estão alguns exemplos:
@@ -83,33 +106,43 @@ Você também pode experimentar a aplicação FoodGeniusAI no Hugging Face Space
 
 [FoodGeniusAI no Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
 
-## 🚀 Deploy para o kubernetes 🚀
 
-Para o deploy do serviço em produção, você pode usar os seguintes comandos:
 
-```bash
-bentoml build -f bentofile.yaml
-```
+## 🏋️‍♂️ Treinamento e Predição 🏋️‍♂️
 
-```bash
-bentoml containerize foodgenius-service:latest --image-tag {seu-usuario-repo}/foodgenius-service:latest
-```
+### Treinamento
 
-```bash
-docker push {your-username-repo}/foodgenius-service:latest
-```
+Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
 
-Edite o arquivo `manifests/deployment.yaml` para incluir sua imagem, depois aplique-o ao seu cluster Kubernetes:
-```bash
-kubectl apply -f manifests/deployment.yaml
-```
+1. Treine o modelo `food_or_nonfood`:
+    ```bash
+    python train.py --model food_or_nonfood --epochs 10 --model_name pretrained_effnetb2_food_or_nonfood.pth --batch_size 32 --device cpu
+    ```
 
+2. Treine o modelo `food101`:
+    ```bash
+    python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
+    ```
+
+### Predição
+
+Você pode fazer predições usando o script `predict.py`. Aqui estão os passos:
+
+1. Predição usando o modelo `food_or_nonfood`:
+    ```bash
+    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --class_names_path class_names.txt --device cuda
+    ```
+
+2. Predição usando o modelo `food101`:
+    ```bash
+    python predict.py --model food101 --image path/to/image.jpg --model_path models/pretrained_effnetb2_food101.pth --class_names_path class_names.txt --device cuda
+    ```
 
 ## 📓 Jupyter Notebooks 📓
 
 Este repositório inclui vários Jupyter Notebooks que demonstram os processos de treinamento e predição usando EfficientNetB2.
 
-Antes de rodar os notebooks, você precisar instalar as dependências requeridas, preferencialmente usando conda ou venv:
+Antes de rodar os notebooks, você precisa instalar as dependências requeridas, preferencialmente usando conda ou venv:
 
 ```bash
 conda env create -f environment.yml
@@ -132,6 +165,26 @@ conda activate foodgenius
     - Arquivo: [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
     - Descrição: Este notebook demonstra como usar o modelo EfficientNetB2 treinado para fazer predições em novas imagens.
 
+## 🚀 Deploy para Kubernetes 🚀
+
+Para o deploy do serviço em produção, você pode usar os seguintes comandos:
+
+```bash
+bentoml build -f bentofile.yaml
+```
+
+```bash
+bentoml containerize foodgenius-service:latest --image-tag {seu-usuario-repo}/foodgenius-service:latest
+```
+
+```bash
+docker push {seu-usuario-repo}/foodgenius-service:latest
+```
+
+Edite o arquivo `manifests/deployment.yaml` para incluir sua imagem, depois aplique-o ao seu cluster Kubernetes:
+```bash
+kubectl apply -f manifests/deployment.yaml
+```
 
 ## 📝 Autor
 **Davi Araujo (@daviaraujocc)**
