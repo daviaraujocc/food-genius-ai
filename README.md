@@ -142,7 +142,7 @@ You can make predictions using the `predict.py` script. Here are the steps:
 
 This repository includes several Jupyter Notebooks that demonstrate the training and prediction processes using EfficientNetB2.
 
-Before running the notebooks, you need to install the required dependencies, preferably using conda or venv:
+Before running the notebooks, install the required dependencies using conda or venv:
 
 ```bash
 conda env create -f environment.yml
@@ -151,19 +151,19 @@ conda activate foodgenius
 
 ### Training Notebooks
 
-1. **EfficientNetB2 Training for Food or Non-Food Classification**
-    - File: [effnetb2_training_food_or_nonfood.ipynb](effnetb2_training_food_or_nonfood.ipynb)
-    - Description: This notebook trains a model on Food5K to classify images as either food or non-food using the EfficientNetB2 architecture.
+1. **Food or Non-Food Classification**
+    - [effnetb2_training_food_or_nonfood.ipynb](effnetb2_training_food_or_nonfood.ipynb)
+    - Trains a model on the Food5K dataset to classify images as food or non-food.
 
-2. **EfficientNetB2 Training for Food101 Dataset**
-    - File: [effnetb2_training_food101.ipynb](effnetb2_training_food101.ipynb)
-    - Description: This notebook trains a model on the Food101 dataset to classify different types of food using the EfficientNetB2 architecture.
+2. **Food101 Classification**
+    - [effnetb2_training_food101.ipynb](effnetb2_training_food101.ipynb)
+    - Trains a model on the Food101 dataset to classify images into 101 types of food.
 
 ### Prediction Notebook
 
 1. **EfficientNetB2 Prediction**
-    - File: [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
-    - Description: This notebook demonstrates how to use the trained EfficientNetB2 model to make predictions on new images.
+    - [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
+    - Demonstrates how to use the trained EfficientNetB2 model to make predictions on new images.
 
 ## 🚀 Deploying to Kubernetes 🚀
 

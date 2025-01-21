@@ -142,7 +142,7 @@ Você pode fazer predições usando o script `predict.py`. Aqui estão os passos
 
 Este repositório inclui vários Jupyter Notebooks que demonstram os processos de treinamento e predição usando EfficientNetB2.
 
-Antes de rodar os notebooks, você precisa instalar as dependências requeridas, preferencialmente usando conda ou venv:
+Antes de rodar os notebooks, instale as dependências usando conda ou venv:
 
 ```bash
 conda env create -f environment.yml
@@ -151,19 +151,19 @@ conda activate foodgenius
 
 ### Notebooks de Treinamento
 
-1. **Treinamento EfficientNetB2 para Classificação de Alimentos ou Não-Alimentos**
-    - Arquivo: [effnetb2_training_food_or_nonfood.ipynb](effnetb2_training_food_or_nonfood.ipynb)
-    - Descrição: Este notebook treina um modelo no Dataset Food5K para classificar imagens como alimentos ou não-alimentos usando a arquitetura EfficientNetB2.
+1. **Classificação de Alimentos ou Não-Alimentos**
+    - [effnetb2_training_food_or_nonfood.ipynb](effnetb2_training_food_or_nonfood.ipynb)
+    - Treina um modelo no dataset Food5K para classificar imagens como alimentos ou não-alimentos.
 
-2. **Treinamento EfficientNetB2 para o Dataset Food101**
-    - Arquivo: [effnetb2_training_food101.ipynb](effnetb2_training_food101.ipynb)
-    - Descrição: Este notebook treina um modelo no dataset Food101 para classificar diferentes tipos de alimentos usando a arquitetura EfficientNetB2.
+2. **Classificação Food101**
+    - [effnetb2_training_food101.ipynb](effnetb2_training_food101.ipynb)
+    - Treina um modelo no dataset Food101 para classificar imagens em 101 tipos de alimentos.
 
 ### Notebook de Predição
 
 1. **EfficientNetB2 Predição**
-    - Arquivo: [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
-    - Descrição: Este notebook demonstra como usar o modelo EfficientNetB2 treinado para fazer predições em novas imagens.
+    - [effnetb2_predict.ipynb](effnetb2_predict.ipynb)
+    - Demonstra como usar o modelo EfficientNetB2 treinado para fazer predições em novas imagens.
 
 ## 🚀 Deploy para Kubernetes 🚀
 
