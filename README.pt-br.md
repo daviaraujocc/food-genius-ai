@@ -28,7 +28,21 @@ FoodGeniusAI usa dois modelos principais para classificação:
 2. **Modelo Food101**
     - Este modelo classifica imagens em 101 diferentes tipos de alimentos usando o dataset Food101.
 
-Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`.
+Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`. 
+
+### 🛠️ Tecnologias Utilizadas 🛠️
+
+FoodGeniusAI utiliza várias tecnologias poderosas para fornecer sua funcionalidade:
+
+- **EfficientNetB2**: Uma arquitetura de rede neural convolucional de última geração usada para classificação de imagens.
+- **PyTorch**: Uma biblioteca de aprendizado de máquina de código aberto usada para treinar os modelos.
+- **BentoML**: Um framework para servir modelos de aprendizado de máquina, facilitando a implantação e gerenciamento dos modelos em ambientes de produção.
+- **Jupyter Notebooks**: Notebooks interativos usados para treinar e testar os modelos.
+- **Docker**: Uma plataforma para containerizar aplicações, garantindo consistência em diferentes ambientes.
+- **Kubernetes**: Uma plataforma de orquestração para implantar, escalar e gerenciar aplicações containerizadas.
+- **Prometheus**: Um sistema de monitoramento usado para coletar métricas dos modelos implantados.
+- **Grafana**: Uma ferramenta de visualização usada para exibir métricas coletadas pelo Prometheus.
+- **Gradio**: Uma biblioteca para criar interfaces de usuário interativas para modelos de aprendizado de máquina.
 
 ## Glossário
 - [Requisitos](#-requisitos-)
@@ -49,26 +63,27 @@ Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados u
 ## 🏃‍♂️ Executando o Serviço 🏃‍♂️
 > Para uso de GPU, utilize `bentofile.gpu.yaml` e `requirements/gpu-requirements.txt`.
 
-1. Clone o repositório:
-    ```bash
-    git clone https://github.com/daviaraujocc/FoodGeniusAI.git
-    cd FoodGeniusAI
-    ```
+Clone o repositório:
+```bash
+git clone https://github.com/daviaraujocc/FoodGeniusAI.git
+cd FoodGeniusAI
+```
+### BentoML CLI
 
-2. Instale as dependências:
-    ```bash
-    pip install -r requirements/cpu-requirements.txt
-    ```
+1. Instale as dependências:
+```bash
+pip install -r requirements/cpu-requirements.txt
+```
 
-3. Sirva o serviço BentoML:
-    ```bash
-    bentoml serve 
-    ```
+2. Sirva o serviço BentoML:
+```bash
+bentoml serve 
+```
 
 Você pode então abrir seu navegador em http://127.0.0.1:3000 e interagir com o serviço através do Swagger UI.
 
 
-### 🐳 Containers 🐳
+### Containers 
 
 Para executar o serviço em um container, você pode usar os seguintes comandos:
 
@@ -86,7 +101,23 @@ bentoml containerize foodgenius-service
 docker run -p 3000:3000 foodgenius-service:$(bentoml get foodgenius-service:latest | yq -r ".version")
 ```
 
+### API Python
 
+Você também pode usar o serviço como uma API Python:
+
+````bash
+bentoml build -f bentofile.yaml
+````
+
+então inicie o serviço:
+```python
+import bentoml
+
+bento = bentoml.get('foodgenius-service:latest')
+
+server = bentoml.HTTPServer(bento, port=3000)
+server.start(blocking=True)
+```
 
 ## 🌐 Usando o Serviço 🌐
 Você pode usar o serviço BentoML com requisições HTTP. Aqui estão alguns exemplos:
@@ -96,9 +127,27 @@ O exemplo a seguir mostra como enviar uma requisição para o serviço para clas
 
 ```bash
 curl -X POST \ 
-  'http://127.0.0.1:3000/classify' \   
+  'http://0.0.0.0:3000/classify' \   
   -H "Content-Type: multipart/form-data" \  
   -F "img=@examples/images/pizza.jpg"
+```
+
+### Cliente BentoML
+
+Para enviar requisições em Python, você pode usar ``bentoml.client.Client`` para enviar requisições ao serviço:
+
+```python
+IMG_PATH = "examples/images/pizza.jpg"
+
+if __name__ == "__main__":
+    import bentoml
+
+    client = bentoml.SyncHTTPClient("http://localhost:3000")
+
+    print("Predictions for image {}".format(IMG_PATH))
+    print(client.classify(img=IMG_PATH))
+
+    client.close()
 ```
 
 ## 🤗 Aplicativo no Hugging Face 🤗

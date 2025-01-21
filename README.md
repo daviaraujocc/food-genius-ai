@@ -30,6 +30,20 @@ FoodGeniusAI uses two main models for classification:
 
 Both models are based on the EfficientNetB2 architecture and were trained using PyTorch. Pretrained models are located in the `models` directory.
 
+### 🛠️ Technologies Used 🛠️
+
+FoodGeniusAI leverages several powerful technologies to deliver its functionality:
+
+- **EfficientNetB2**: A state-of-the-art convolutional neural network architecture used for image classification.
+- **PyTorch**: An open-source machine learning library used for training the models.
+- **BentoML**: A framework for serving machine learning models, making it easy to deploy and manage the models on production environments.
+- **Jupyter Notebooks**: Interactive notebooks used for training and testing the models.
+- **Docker**: A platform for containerizing applications, ensuring consistency across different environments.
+- **Kubernetes**: An orchestration platform for deploying, scaling, and managing containerized applications.
+- **Prometheus**: A monitoring system used to collect metrics from the deployed models.
+- **Grafana**: A visualization tool used to display metrics collected by Prometheus.
+- **Gradio**: A library for creating interactive user interfaces for machine learning models.
+
 ## Glossary
 - [Requirements](#-requirements-)
 - [Running the Service](#-running-the-service-)
@@ -49,26 +63,27 @@ Both models are based on the EfficientNetB2 architecture and were trained using 
 ## 🏃‍♂️ Running the Service 🏃‍♂️
 > For GPU use bentofile.gpu.yaml and requirements/gpu-requirements.txt.
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/daviaraujocc/FoodGeniusAI.git
-    cd FoodGeniusAI
-    ```
+Clone the repository:
+```bash
+git clone https://github.com/daviaraujocc/FoodGeniusAI.git
+cd FoodGeniusAI
+```
+### BentoML CLI
 
-2. Install the dependencies:
-    ```bash
-    pip install -r requirements/cpu-requirements.txt
-    ```
+1. Install the dependencies:
+```bash
+pip install -r requirements/cpu-requirements.txt
+```
 
-3. Serve the BentoML service:
-    ```bash
-    bentoml serve 
-    ```
+2. Serve the BentoML service:
+```bash
+bentoml serve 
+```
 
 You can then open your browser at http://127.0.0.1:3000 and interact with the service through Swagger UI.
 
 
-### 🐳 Containers 🐳
+### Containers 
 
 To run the service in a container, you can use the following commands:
 
@@ -86,7 +101,23 @@ bentoml containerize foodgenius-service
 docker run -p 3000:3000 foodgenius-service:$(bentoml get foodgenius-service:latest | yq -r ".version")
 ```
 
+### Python API
 
+You can also use the service as a Python API:
+
+````bash
+bentoml build -f bentofile.yaml
+````
+
+then start the service:
+```python
+import bentoml
+
+bento = bentoml.get('foodgenius-service:latest')
+
+server = bentoml.HTTPServer(bento, port=3000)
+server.start(blocking=True)
+```
 
 ## 🌐 Using the Service 🌐
 You can use the BentoML service with HTTP requests. Here are some examples:
@@ -96,9 +127,27 @@ The following example shows how to send a request to the service to classify an 
 
 ```bash
 curl -X POST \ 
-  'http://127.0.0.1:3000/classify' \   
+  'http://0.0.0.0:3000/classify' \   
   -H "Content-Type: multipart/form-data" \  
   -F "img=@examples/images/pizza.jpg"
+```
+
+### BentoML Client
+
+To send requests in Python, one can use ``bentoml.client.Client`` to send requests to the service:
+
+```python
+IMG_PATH = "examples/images/pizza.jpg"
+
+if __name__ == "__main__":
+    import bentoml
+
+    client = bentoml.SyncHTTPClient("http://localhost:3000")
+
+    print("Predictions for image {}".format(IMG_PATH))
+    print(client.classify(img=IMG_PATH))
+
+    client.close()
 ```
 
 ## 🤗 Hugging Face App 🤗
