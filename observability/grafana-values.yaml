@@ -1,0 +1,11 @@
+adminUser: admin
+adminPassword: qwerty1234
+sidecar:
+  dashboards:
+    enabled: true
+  datasources:
+    enabled: true
+  notifiers:
+    enabled: true
+ingress:
+  enabled: false

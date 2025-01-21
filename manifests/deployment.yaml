@@ -9,6 +9,9 @@ spec:
   - name: predict
     port: 3000
     targetPort: 3000
+  - name: metrics
+    port: 3000
+    targetPort: 3000
   selector:
     app: foodgenius
   type: LoadBalancer
@@ -33,3 +36,4 @@ spec:
         name: foodgenius
         ports:
         - containerPort: 3000
+          name: metrics
