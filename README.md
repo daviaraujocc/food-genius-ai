@@ -13,14 +13,14 @@
 <br>
 
 ## 📖 Introduction 📖
-FoodGeniusAI is an AI-powered application that uses EfficientNetB2 to classify food images. It can identify the type of food and determine if the image contains food.
+FoodGeniusAI is an AI-powered application that uses Pre trained EfficientNetB2 to classify food images. It can identify the type of food and determine if the image contains food.
 
 <div align="center">
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
 ### 📊 Models 📊
-FoodGeniusAI uses two main models for classification:
+There are two main models used for classification in FoodGeniusAI:
 
 1. **Food or Non-Food Model (Food5K)**
     - This model classifies images as either food or non-food using Food5k dataset.
@@ -28,7 +28,11 @@ FoodGeniusAI uses two main models for classification:
 2. **Food101 Model**
     - This model classifies images into 101 different types of food using the Food101 dataset.
 
-Both models are based on the EfficientNetB2 architecture and were trained using PyTorch. Pretrained models are located in the `models` directory.
+Both models are based on EfficientNetB2 architecture and were trained using PyTorch. Pretrained models are located in the `models` directory.
+
+#### 📈 Performance 📈
+
+Both models were trained using the Adam optimizer with a learning rate of 0.001 and a batch size of 32 for 10 epochs, with 80% accuracy.
 
 ### 🛠️ Technologies Used 🛠️
 
@@ -61,7 +65,6 @@ FoodGeniusAI leverages several powerful technologies to deliver its functionalit
 - Pip
 
 ## 🏃‍♂️ Running the Service 🏃‍♂️
-> For GPU use bentofile.gpu.yaml and requirements/gpu-requirements.txt.
 
 Clone the repository:
 ```bash
@@ -70,12 +73,12 @@ cd FoodGeniusAI
 ```
 ### BentoML CLI
 
-1. Install the dependencies:
+Install the dependencies:
 ```bash
-pip install -r requirements/cpu-requirements.txt
+pip install -r requirements/test.txt
 ```
 
-2. Serve the BentoML service:
+Serve the BentoML service:
 ```bash
 bentoml serve 
 ```
@@ -84,6 +87,9 @@ You can then open your browser at http://127.0.0.1:3000 and interact with the se
 
 
 ### Containers 
+
+> For GPU use bentofile.gpu.yaml
+> Note that to run with GPU you will need to have [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) setup.
 
 To run the service in a container, you can use the following commands:
 
@@ -94,7 +100,7 @@ bentoml build -f bentofile.yaml
 > Executing this command will create on your home the directory `bentoml` with the service files.
 
 ```bash
-bentoml containerize foodgenius-service
+bentoml containerize foodgenius-service:latest
 ```
 
 ```bash
@@ -134,7 +140,7 @@ curl -X POST \
 
 ### BentoML Client
 
-To send requests in Python, one can use ``bentoml.client.Client`` to send requests to the service:
+To send requests via client using python library:
 
 ```python
 IMG_PATH = "examples/images/pizza.jpg"
@@ -160,6 +166,13 @@ You can also try out the FoodGeniusAI application on Hugging Face Spaces:
 
 ## 🏋️‍♂️ Training and Prediction 🏋️‍♂️
 
+Before running the scripts/notebooks, it's recommended to create a new environment:
+
+```bash
+conda env create -f environment.yml
+conda activate foodgenius
+```
+
 ### Training
 
 You can train the models using the `train.py` script. Here are the steps:
@@ -174,7 +187,9 @@ You can train the models using the `train.py` script. Here are the steps:
     python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
     ```
 
-Results for the training process will be saved in the `results` directory.
+> Use device `cuda` if you have a GPU compatible available.
+
+Results for the training process including accuracy, loss will be saved in the `results` directory.
 
 ### Prediction
 
@@ -193,13 +208,6 @@ You can make predictions using the `predict.py` script. Here are the steps:
 ## 📓 Jupyter Notebooks 📓
 
 This repository includes several Jupyter Notebooks that demonstrate the training and prediction processes using EfficientNetB2.
-
-Before running the notebooks, install the required dependencies using conda or venv:
-
-```bash
-conda env create -f environment.yml
-conda activate foodgenius
-```
 
 ### Training Notebooks
 

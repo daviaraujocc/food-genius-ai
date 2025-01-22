@@ -28,7 +28,7 @@ FoodGeniusAI usa dois modelos principais para classificação:
 2. **Modelo Food101**
     - Este modelo classifica imagens em 101 diferentes tipos de alimentos usando o dataset Food101.
 
-Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`. 
+Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`.
 
 ### 🛠️ Tecnologias Utilizadas 🛠️
 
@@ -61,7 +61,6 @@ FoodGeniusAI utiliza várias tecnologias poderosas para fornecer sua funcionalid
 - Pip
 
 ## 🏃‍♂️ Executando o Serviço 🏃‍♂️
-> Para uso de GPU, utilize `bentofile.gpu.yaml` e `requirements/gpu-requirements.txt`.
 
 Clone o repositório:
 ```bash
@@ -70,12 +69,12 @@ cd FoodGeniusAI
 ```
 ### BentoML CLI
 
-1. Instale as dependências:
+Instale as dependências:
 ```bash
 pip install -r requirements/cpu-requirements.txt
 ```
 
-2. Sirva o serviço BentoML:
+Sirva o serviço BentoML:
 ```bash
 bentoml serve 
 ```
@@ -84,6 +83,9 @@ Você pode então abrir seu navegador em http://127.0.0.1:3000 e interagir com o
 
 
 ### Containers 
+
+> Para uso de GPU, utilize `bentofile.gpu.yaml`
+> Note que para rodar com GPU você precisará ter [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) configurado.
 
 Para executar o serviço em um container, você pode usar os seguintes comandos:
 
@@ -94,7 +96,7 @@ bentoml build -f bentofile.yaml
 > Executar este comando criará no home do usuário, o diretório `bentoml` com os arquivos do serviço.
 
 ```bash
-bentoml containerize foodgenius-service
+bentoml containerize foodgenius-service:latest
 ```
 
 ```bash
@@ -134,7 +136,7 @@ curl -X POST \
 
 ### Cliente BentoML
 
-Para enviar requisições em Python, você pode usar ``bentoml.client.Client`` para enviar requisições ao serviço:
+Para enviar requisições via cliente usando a biblioteca python:
 
 ```python
 IMG_PATH = "examples/images/pizza.jpg"
@@ -283,3 +285,4 @@ kubectl port-forward svc/grafana -n monitoring 3000:3000
 
 ## 📝 Autor
 **Davi Araujo (@daviaraujocc)**
+`````
