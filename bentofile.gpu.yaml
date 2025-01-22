@@ -28,3 +28,7 @@ docker:
 envs:
   - name: BENTOML_DEVICE
     value: "cuda"
+  - name: FOOD101_MODEL_PATH
+    value: models/pretrained_effnetb2_food_101.pth
+  - name: FOOD_NONFOOD_MODEL_PATH
+    value: models/pretrained_effnetb2_food_or_nonfood.pth
