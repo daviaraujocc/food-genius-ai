@@ -102,7 +102,7 @@ def train_food_or_nonfood(epochs, model_path, model_name, device, batch_size, sp
     training_time = end_time - start_time
     print(f"Training time for {model_name}: {training_time:.2f} seconds")
 
-    model_path = os.path.join(model_path, os.path.splitext(model_name)[0])
+    model_path = os.path.join(model_path,"food_or_nonfood", os.path.splitext(model_name)[0])
 
     utils.save_model(model=effnetb2_5k_food_or_nonfood, target_dir=model_path, model_name=model_name)
     save_and_plot_results(effnetb2_5k_nonfood_results, model_name, model_path)
@@ -112,12 +112,19 @@ def train_food101(epochs, model_path, model_name, device, batch_size, split_size
 
     effnetb2_101, effnetb2_transforms = model_builder.create_effnetb2_model(num_classes=101)
     food_101_transforms = transforms.Compose([
-        transforms.TrivialAugmentWide(), effnetb2_transforms,
+        transforms.RandomRotation(15),  
+        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),  
+        transforms.RandomHorizontalFlip(),  
+        transforms.ColorJitter(contrast=0.1),  
+        transforms.TrivialAugmentWide(),  
+        effnetb2_transforms,  
     ])
+
+    val_transforms = transforms.Compose([effnetb2_transforms])
 
 
     train_set = datasets.Food101(root=data_dir, split="train", transform=food_101_transforms, download=True)
-    val_set = datasets.Food101(root=data_dir, split="test", transform=food_101_transforms, download=True)
+    val_set = datasets.Food101(root=data_dir, split="test", transform=val_transforms, download=True)
 
     train_dataloader_food101, test_dataloader_food101, class_names = data_setup.create_dataloaders_from_dataset(train_set, val_set, batch_size, 2, split_size=split_size)
     
@@ -138,7 +145,7 @@ def train_food101(epochs, model_path, model_name, device, batch_size, split_size
     training_time = end_time - start_time
     print(f"Training time for {model_name}: {training_time:.2f} seconds")
 
-    model_path = os.path.join(model_path, os.path.splitext(model_name)[0])
+    model_path = os.path.join(model_path,"food101", os.path.splitext(model_name)[0])
 
     utils.save_model(model=effnetb2_101, target_dir=model_path, model_name=model_name)
     save_and_plot_results(effnetb2_101_results, model_name, model_path)
