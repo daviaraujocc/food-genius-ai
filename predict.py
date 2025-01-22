@@ -29,7 +29,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, choices=["food_or_nonfood", "food101"], required=True, help="Model to use for prediction")
     parser.add_argument("--image", type=str, required=True, help="Path to the image to predict")
     parser.add_argument("--model_path", type=str, required=True, help="Path to the trained model")
-    parser.add_argument("--class_names_path", type=str, help="Path to the class names file (required for food101)")
+    parser.add_argument("--class_names_path", type=str, default="class_names.txt", help="Path to the class names file (required for food101)")
     parser.add_argument("--device", type=str, choices=["cpu", "cuda"], default="cuda", help="Device to use for prediction")
 
     args = parser.parse_args()
