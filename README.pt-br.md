@@ -13,46 +13,51 @@
 <br>
 
 ## 📖 Introdução 📖
-FoodGeniusAI é uma aplicação de IA que usa uma EfficientNetB2 pré-treinada para classificar imagens de alimentos. Ela pode identificar o tipo de alimento e determinar se a imagem contém alimento. A aplicação utiliza BentoML como framework para implantar o modelo em ambientes de produção.
+FoodGeniusAI é um sistema de classificação de alimentos alimentado por IA que identifica instantaneamente pratos a partir de imagens. Construído com EfficientNetB2 e BentoML, oferece tanto a detecção de alimentos quanto a classificação detalhada de pratos com 80% de precisão.
 
 <div align="center">
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
-### 📊 Modelos 📊
-Existem dois modelos principais usados para classificação no FoodGeniusAI:
+### ✨ Principais Recursos
 
-1. **Modelo Alimento ou Não-Alimento (Food5K)**
-    - Este modelo classifica imagens como alimento ou não-alimento usando o dataset Food5K.
+- 🍔 Detecção Instantânea de Alimentos: Distingue automagicamente imagens de alimentos.
+- 🔍 101 Categorias de Alimentos: Reconhece uma ampla variedade de pratos com 80% de precisão
+- ⚡ Processamento Rápido: Otimizado para classificação em tempo real
+- 🚀 Pronto para Produção: Implantável com BentoML para servir em escala
+- 📱 Suporte a API REST: Fácil integração com qualquer aplicação
 
-2. **Modelo Food101**
-    - Este modelo classifica imagens em 101 diferentes tipos de alimentos usando o dataset Food101.
+### 🎯 Detalhes do Modelo
+- Arquitetura: EfficientNetB2
+- Framework: PyTorch
+- Precisão: 80%
+- Treinamento: 10 epochs com otimizador Adam (lr=0.001, batch_size=32)
 
-Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`.
+## 🤗 Experimente Agora! 🤗
+Experimente o FoodGeniusAI instantaneamente no Hugging Face Spaces:
 
-#### 📈 Desempenho 📈
+[FoodGeniusAI no Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
 
-Ambos os modelos foram treinados usando o otimizador Adam com uma taxa de aprendizado de 0.001 e um tamanho de batch de 32 por 10 epochs, alcançando 80% de precisão.
+### 🛠️ Tecnologias Principais
 
-### 🛠️ Tecnologias Utilizadas 🛠️
+- **ML & Treinamento**
+  - 🧠 EfficientNetB2: CNN avançada para classificação de imagens
+  - 🔥 PyTorch: Framework de deep learning para treinamento de modelos
+  - 📊 Jupyter: Desenvolvimento interativo e experimentação de modelos
 
-FoodGeniusAI utiliza várias tecnologias poderosas para fornecer sua funcionalidade:
+- **UI & Deploy**
+  - 🎨 Gradio: Interface web interativa para demonstração de modelos
+  - 🍱 BentoML: Servir e implantar modelos de ML
+  - 🐳 Docker: Containerização para implantações consistentes
 
-- **EfficientNetB2**: Uma arquitetura de rede neural convolucional de última geração usada para classificação de imagens.
-- **PyTorch**: Uma biblioteca de aprendizado de máquina de código aberto usada para treinar os modelos.
-- **BentoML**: Um framework para servir modelos de aprendizado de máquina, facilitando a implantação e gerenciamento dos modelos em ambientes de produção.
-- **Jupyter Notebooks**: Notebooks interativos usados para treinar e testar os modelos.
-- **Docker**: Uma plataforma para containerizar aplicações, garantindo consistência em diferentes ambientes.
-- **Kubernetes**: Uma plataforma de orquestração para implantar, escalar e gerenciar aplicações containerizadas.
-- **Prometheus**: Um sistema de monitoramento usado para coletar métricas dos modelos implantados.
-- **Grafana**: Uma ferramenta de visualização usada para exibir métricas coletadas pelo Prometheus.
-- **Gradio**: Uma biblioteca para criar interfaces de usuário interativas para modelos de aprendizado de máquina.
+- **Infraestrutura**
+  - ⚓ Kubernetes: Orquestração de contêineres em escala
+  - 📈 Prometheus & Grafana: Métricas em tempo real e visualização
 
 ## Glossário
 - [Requisitos](#-requisitos-)
 - [Executando o Serviço](#-executando-o-serviço-)
 - [Usando o Serviço](#-usando-o-serviço-)
-- [Aplicativo no Hugging Face](#-aplicativo-no-hugging-face-)
 - [Treinamento e Predição](#-treinamento-e-predição-)
 - [Jupyter Notebooks](#-jupyter-notebooks-)
 - [Deploy para Kubernetes](#-deploy-para-kubernetes-)
@@ -61,34 +66,28 @@ FoodGeniusAI utiliza várias tecnologias poderosas para fornecer sua funcionalid
 ## 📋 Requisitos 📋
 
 - Python 3.11+
-- BentoML
-- Pip
+- GPU compatível com CUDA (opcional, para processamento mais rápido)
+- Docker (opcional, para containerização)
 
 ## 🏃‍♂️ Executando o Serviço 🏃‍♂️
 
-Clone o repositório:
+Clone o repositório e instale as dependências:
 ```bash
 git clone https://github.com/daviaraujocc/FoodGeniusAI.git
 cd FoodGeniusAI
-```
-### BentoML CLI
-
-Instale as dependências:
-```bash
 pip install -r requirements/test.txt
 ```
+### Desenvolvimento Local
 
-Sirva o serviço BentoML:
 ```bash
 bentoml serve 
 ```
+> Acesse em http://127.0.0.1:3000 e interaja com o serviço através do Swagger UI.
 
-Você pode então abrir seu navegador em http://127.0.0.1:3000 e interagir com o serviço através do Swagger UI.
 
+### Docker (Recomendado)
 
-### Containers 
-
-> Para uso de GPU, utilize `bentofile.gpu.yaml`
+> Para uso de GPU, utilize bentofile.gpu.yaml
 > Note que para rodar com GPU você precisará ter [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) configurado.
 
 Para executar o serviço em um container, você pode usar os seguintes comandos:
@@ -96,8 +95,6 @@ Para executar o serviço em um container, você pode usar os seguintes comandos:
 ```bash
 bentoml build -f bentofile.yaml
 ```
-
-> Executar este comando criará no home do usuário, o diretório `bentoml` com os arquivos do serviço.
 
 ```bash
 bentoml containerize foodgenius-service:latest
@@ -156,13 +153,6 @@ if __name__ == "__main__":
     client.close()
 ```
 
-## 🤗 Aplicativo no Hugging Face 🤗
-
-Você também pode experimentar a aplicação FoodGeniusAI no Hugging Face Spaces:
-
-[FoodGeniusAI no Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
-
-
 
 ## 🏋️‍♂️ Treinamento e Predição 🏋️‍♂️
 
@@ -179,17 +169,41 @@ Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
 
 1. Treine o modelo `food_or_nonfood`:
     ```bash
-    python train.py --model food_or_nonfood --epochs 10 --model_name pretrained_effnetb2_food_or_nonfood.pth --batch_size 32 --device cpu
+    python train.py \ 
+    --model food_or_nonfood \
+    --epochs 5 \
+    --model_name pretrained_effnetb2_food_or_nonfood.pth \ 
+    --batch_size 32 \ 
+    --learning_rate 0.001 \
+    --device cuda # ou cpu
     ```
 
 2. Treine o modelo `food101`:
     ```bash
-    python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
+    python train.py \ 
+    --model food101 \ 
+    --epochs 10 \ 
+    --model_name pretrained_effnetb2_food101.pth \ 
+    --split_size 0.2 \ 
+    --batch_size 32 \ 
+    --learning_rate 0.001 \
+    --device cuda # ou cpu
     ```
 
 > Use o dispositivo `cuda` se você tiver uma GPU compatível disponível.
 
 Os resultados do processo de treinamento, incluindo precisão e perda, serão salvos no diretório `results`.
+
+#### Hiperparâmetros de Treinamento
+
+| Parâmetro     | Padrão                                      | Descrição       |
+|---------------|--------------------------------------------------|---------------------|
+| `epochs`    | `5`                                       | Número de epochs para treinamento       |
+| `batch_size` | `32`                                      | Tamanho do batch para treinamento             |
+| `split_size` | `0.2`                                     | Tamanho da divisão treino-teste |
+| `device`     | `cuda`                                    | Dispositivo para treinamento (`cuda` ou `cpu`) |
+| `learning_rate`         | `0.001`                                   | Taxa de aprendizado para treinamento          |
+| `model_name` | `model.pth` | Nome do arquivo do modelo treinado      |	
 
 ### Predição
 
@@ -197,12 +211,20 @@ Você pode fazer predições usando o script `predict.py`. Aqui estão os passos
 
 1. Predição usando o modelo `food_or_nonfood`:
     ```bash
-    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --device cpu
+    python predict.py \ 
+    --model food_or_nonfood \ 
+    --image path/to/image.jpg \ 
+    --model_path models/pretrained_effnetb2_food_or_nonfood.pth \ 
+    --device cpu
     ```
 
 2. Predição usando o modelo `food101`:
     ```bash
-    python predict.py --model food101 --image path/to/image.jpg --model_path models/pretrained_effnetb2_food101.pth --class_names_path class_names.txt --device cpu
+    python predict.py \ 
+    --model food101 \ 
+    --image path/to/image.jpg \ 
+    --model_path models/pretrained_effnetb2_food101.pth \
+    --device cpu
     ```
 
 ## 📓 Jupyter Notebooks 📓
@@ -250,37 +272,19 @@ kubectl apply -f manifests/deployment.yaml
 
 BentoML fornece recursos de observabilidade integrados, incluindo métricas do Prometheus. Você pode acessar essas métricas no endpoint `/metrics`.
 
-Para ter um stack de monitoramento no Kubernetes, você pode seguir os seguintes passos:
+Para instalar o stack de monitoramento no Kubernetes, você pode seguir os seguintes passos:
 
-1. Instale o Prometheus Operator
+### Configuração Rápida
+
 
 ```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update prometheus-community
-
-helm install prometheus prometheus-community/kube-prometheus-stack \
--f ./observability/prometheus-values.yaml \
---namespace monitoring --create-namespace
+chmod +x scripts/setup_monitoring.sh; ./scripts/setup_monitoring.sh
 ```
 
-2. Instale o Grafana
+Este script instalará o stack prometheus + grafana no namespace monitoring.
 
-```bash
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update grafana
 
-helm install grafana grafana/grafana \
--f ./observability/grafana-values.yaml \
---namespace monitoring --create-namespace
-``` 
-
-3. Aplique as dependências
-
-```bash
-kubectl apply -f observability/podmonitor.yaml
-```
-
-4. Verifique no Grafana
+Acesse o dashboard do grafana (usuário/senha padrão é `admin`):
 
 ```bash
 kubectl port-forward svc/grafana -n monitoring 3000:3000

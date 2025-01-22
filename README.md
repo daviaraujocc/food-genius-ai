@@ -13,46 +13,51 @@
 <br>
 
 ## 📖 Introduction 📖
-FoodGeniusAI is an AI-powered application that uses a pre-trained EfficientNetB2 to classify food images. It can identify the type of food and determine if the image contains food. The application leverages BentoML as a framework for deploying the model in production environments.
+FoodGeniusAI is an AI-powered food classification system that instantly identifies dishes from images. Built with EfficientNetB2 and BentoML, it offers both food detection and detailed dish classification with 80% accuracy.
 
 <div align="center">
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
-### 📊 Models 📊
-There are two main models used for classification in FoodGeniusAI:
+### ✨ Key Features
 
-1. **Food or Non-Food Model (Food5K)**
-    - This model classifies images as either food or non-food using Food5k dataset.
+- 🍔 Instant Food Detection: Automatically distinguishes food from non-food images
+- 🔍 101 Food Categories: Recognizes a wide variety of dishes with 80% accuracy
+- ⚡ Fast Processing: Optimized for real-time classification
+- 🚀 Production-Ready: Deployable with BentoML for scalable serving
+- 📱 REST API Support: Easy integration with any application
 
-2. **Food101 Model**
-    - This model classifies images into 101 different types of food using the Food101 dataset.
+### 🎯 Model Details
+- Architecture: EfficientNetB2
+- Framework: PyTorch
+- Accuracy: 80%
+- Training: 10 epochs with Adam optimizer (lr=0.001, batch_size=32)
 
-Both models are based on EfficientNetB2 architecture and were trained using PyTorch. Pretrained models are located in the `models` directory.
+## 🤗 Try it Now! 🤗
+Try out FoodGeniusAI instantly on Hugging Face Spaces:
 
-#### 📈 Performance 📈
+[FoodGeniusAI on Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
 
-Both models were trained using the Adam optimizer with a learning rate of 0.001 and a batch size of 32 for 10 epochs, with 80% accuracy.
+### 🛠️ Core Technologies
 
-### 🛠️ Technologies Used 🛠️
+- **ML & Training**
+  - 🧠 EfficientNetB2: Advanced CNN for image classification
+  - 🔥 PyTorch: Deep learning framework for model training
+  - 📊 Jupyter: Interactive development and model experimentation
 
-FoodGeniusAI leverages several powerful technologies to deliver its functionality:
+- **UI & Serving**
+  - 🎨 Gradio: Interactive web interface for model demo
+  - 🍱 BentoML: ML model serving and deployment
+  - 🐳 Docker: Containerization for consistent deployments
 
-- **EfficientNetB2**: A state-of-the-art convolutional neural network architecture used for image classification.
-- **PyTorch**: An open-source machine learning library used for training the models.
-- **BentoML**: A framework for serving machine learning models, making it easy to deploy and manage the models on production environments.
-- **Jupyter Notebooks**: Interactive notebooks used for training and testing the models.
-- **Docker**: A platform for containerizing applications, ensuring consistency across different environments.
-- **Kubernetes**: An orchestration platform for deploying, scaling, and managing containerized applications.
-- **Prometheus**: A monitoring system used to collect metrics from the deployed models.
-- **Grafana**: A visualization tool used to display metrics collected by Prometheus.
-- **Gradio**: A library for creating interactive user interfaces for machine learning models.
+- **Infrastructure**
+  - ⚓ Kubernetes: Container orchestration at scale
+  - 📈 Prometheus & Grafana: Real-time metrics and visualization
 
 ## Glossary
 - [Requirements](#-requirements-)
 - [Running the Service](#-running-the-service-)
 - [Using the Service](#-using-the-service-)
-- [Hugging Face App](#-hugging-face-app-)
 - [Training and Prediction](#-training-and-prediction-)
 - [Jupyter Notebooks](#-jupyter-notebooks-)
 - [Deploying to Kubernetes](#-deploying-to-kubernetes-)
@@ -61,32 +66,26 @@ FoodGeniusAI leverages several powerful technologies to deliver its functionalit
 ## 📋 Requirements 📋
 
 - Python 3.11+
-- BentoML
-- Pip
+- CUDA-compatible GPU (optional, for faster processing)
+- Docker (optional, for containerization)
 
 ## 🏃‍♂️ Running the Service 🏃‍♂️
 
-Clone the repository:
+Clone the repository and install the dependencies:
 ```bash
 git clone https://github.com/daviaraujocc/FoodGeniusAI.git
 cd FoodGeniusAI
-```
-### BentoML CLI
-
-Install the dependencies:
-```bash
 pip install -r requirements/test.txt
 ```
+### Local development
 
-Serve the BentoML service:
 ```bash
 bentoml serve 
 ```
+> Access at http://127.0.0.1:3000 and interact with the service through the Swagger UI.
 
-You can then open your browser at http://127.0.0.1:3000 and interact with the service through Swagger UI.
 
-
-### Containers 
+### Docker (Recommended)
 
 > For GPU use bentofile.gpu.yaml
 > Note that to run with GPU you will need to have [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) setup.
@@ -96,8 +95,6 @@ To run the service in a container, you can use the following commands:
 ```bash
 bentoml build -f bentofile.yaml
 ```
-
-> Executing this command will create on your home the directory `bentoml` with the service files.
 
 ```bash
 bentoml containerize foodgenius-service:latest
@@ -156,14 +153,6 @@ if __name__ == "__main__":
     client.close()
 ```
 
-## 🤗 Hugging Face App 🤗
-
-You can also try out the FoodGeniusAI application on Hugging Face Spaces:
-
-[FoodGeniusAI on Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
-
-
-
 ## 🏋️‍♂️ Training and Prediction 🏋️‍♂️
 
 Before running the scripts/notebooks, it's recommended to create a new environment:
@@ -179,17 +168,41 @@ You can train the models using the `train.py` script. Here are the steps:
 
 1. Train the `food_or_nonfood` model:
     ```bash
-    python train.py --model food_or_nonfood --epochs 10 --model_name pretrained_effnetb2_food_or_nonfood.pth --batch_size 32 --device cpu
+    python train.py \ 
+    --model food_or_nonfood \
+    --epochs 5 \
+    --model_name pretrained_effnetb2_food_or_nonfood.pth \ 
+    --batch_size 32 \ 
+    --learning_rate 0.001 \
+    --device cuda # or cpu
     ```
 
 2. Train the `food101` model:
     ```bash
-    python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
+    python train.py \ 
+    --model food101 \ 
+    --epochs 10 \ 
+    --model_name pretrained_effnetb2_food101.pth \ 
+    --split_size 0.2 \ 
+    --batch_size 32 \ 
+    --learning_rate 0.001 \
+    --device cuda # or cpu
     ```
 
 > Use device `cuda` if you have a GPU compatible available.
 
 Results for the training process including accuracy, loss will be saved in the `results` directory.
+
+#### Training Hyperparameters
+
+| Parameter     | Default                                      | Description       |
+|---------------|--------------------------------------------------|---------------------|
+| `epochs`    | `5`                                       | Number of epochs for training       |
+| `batch_size` | `32`                                      | Batch size for training             |
+| `split_size` | `0.2`                                     | Train-test split size |
+| `device`     | `cuda`                                    | Device for training (`cuda` or `cpu`) |
+| `learning_rate`         | `0.001`                                   | Learning rate for training          |
+| `model_name` | `model.pth` | Name of the trained model file      |	
 
 ### Prediction
 
@@ -197,12 +210,20 @@ You can make predictions using the `predict.py` script. Here are the steps:
 
 1. Predict using the `food_or_nonfood` model:
     ```bash
-    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --device cpu
+    python predict.py \ 
+    --model food_or_nonfood \ 
+    --image path/to/image.jpg \ 
+    --model_path models/pretrained_effnetb2_food_or_nonfood.pth \ 
+    --device cpu
     ```
 
 2. Predict using the `food101` model:
     ```bash
-    python predict.py --model food101 --image path/to/image.jpg --model_path models/pretrained_effnetb2_food101.pth --class_names_path class_names.txt --device cpu
+    python predict.py \ 
+    --model food101 \ 
+    --image path/to/image.jpg \ 
+    --model_path models/pretrained_effnetb2_food101.pth \
+    --device cpu
     ```
 
 ## 📓 Jupyter Notebooks 📓
@@ -227,7 +248,7 @@ This repository includes several Jupyter Notebooks that demonstrate the training
 
 ## 🚀 Deploying to Kubernetes 🚀
 
-To deploy the service to production, you can use the following commands:
+To deploy the service to k8s, you can use the following commands:
 
 ```bash
 bentoml build -f bentofile.yaml
@@ -250,38 +271,19 @@ kubectl apply -f manifests/deployment.yaml
 
 BentoML provides built-in observability features, including Prometheus metrics. You can access these metrics at the `/metrics` endpoint.
 
-To have monitoring stack on kubernetes, you can do the following steps:
+To install monitoring stack on kubernetes, you can do the following steps:
 
+### Quick setup
 
-1. Install Prometheus Operator
 
 ```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update prometheus-community
-
-helm install prometheus prometheus-community/kube-prometheus-stack \
--f ./observability/prometheus-values.yaml \
---namespace monitoring --create-namespace
+chmod +x scripts/setup_monitoring.sh; ./scripts/setup_monitoring.sh
 ```
 
-2. Install Grafana
+This script will install prometheus + grafana stack on namespace monitoring.
 
-```bash
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update grafana
 
-helm install grafana grafana/grafana \
--f ./observability/grafana-values.yaml \
---namespace monitoring --create-namespace
-``` 
-
-3. Apply dependencies
-
-```bash
-kubectl apply -f observability/podmonitor.yaml
-```
-
-4. Check on Grafana
+Access grafana dashboard (default username/password is `admin`):
 
 ```bash
 kubectl port-forward svc/grafana -n monitoring 3000:3000
