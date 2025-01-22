@@ -151,7 +151,7 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", type=str, default="model.pth", help="Name of the saved model")
     parser.add_argument("--device", type=str, choices=["cpu", "cuda"], default="cuda", help="Device to use for training")
     parser.add_argument("--batch_size", type=int, default=32, help="Batch size for training, higher batch size may require more memory and may not fit on GPU")
-    parser.add_argument("--split_size", type=float, default=1, help="Fraction of the dataset to use for training, set to less than 1 to use a fraction of the dataset")
+    parser.add_argument("--split_size", type=float, default=0.2, help="Fraction of the dataset to use for training, set to less than 1 to use a fraction of the dataset")
     parser.add_argument("--learning_rate", type=float, default=0.001, help="Learning rate for training")
 
     args = parser.parse_args()
