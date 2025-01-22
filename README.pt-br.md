@@ -21,22 +21,11 @@ FoodGeniusAI é um sistema de classificação de alimentos alimentado por IA que
 
 ### ✨ Principais Recursos
 
-- 🍔 Detecção Instantânea de Alimentos: Distingue automagicamente imagens de alimentos.
+- 🍔 Detecção Instantânea de Alimentos: Distingue automaticamente imagens de alimentos de não-alimentos
 - 🔍 101 Categorias de Alimentos: Reconhece uma ampla variedade de pratos com 80% de precisão
 - ⚡ Processamento Rápido: Otimizado para classificação em tempo real
 - 🚀 Pronto para Produção: Implantável com BentoML para servir em escala
 - 📱 Suporte a API REST: Fácil integração com qualquer aplicação
-
-### 🎯 Detalhes do Modelo
-- Arquitetura: EfficientNetB2
-- Framework: PyTorch
-- Precisão: 80%
-- Treinamento: 10 epochs com otimizador Adam (lr=0.001, batch_size=32)
-
-## 🤗 Experimente Agora! 🤗
-Experimente o FoodGeniusAI instantaneamente no Hugging Face Spaces:
-
-[FoodGeniusAI no Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
 
 ### 🛠️ Tecnologias Principais
 
@@ -53,6 +42,12 @@ Experimente o FoodGeniusAI instantaneamente no Hugging Face Spaces:
 - **Infraestrutura**
   - ⚓ Kubernetes: Orquestração de contêineres em escala
   - 📈 Prometheus & Grafana: Métricas em tempo real e visualização
+
+### 🤗 Experimente Agora! 🤗
+Experimente o FoodGeniusAI instantaneamente no Hugging Face Spaces:
+
+[FoodGeniusAI no Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
+
 
 ## Glossário
 - [Requisitos](#-requisitos-)
@@ -83,7 +78,6 @@ pip install -r requirements/test.txt
 bentoml serve 
 ```
 > Acesse em http://127.0.0.1:3000 e interaja com o serviço através do Swagger UI.
-
 
 ### Docker (Recomendado)
 
@@ -204,6 +198,19 @@ Os resultados do processo de treinamento, incluindo precisão e perda, serão sa
 | `device`     | `cuda`                                    | Dispositivo para treinamento (`cuda` ou `cpu`) |
 | `learning_rate`         | `0.001`                                   | Taxa de aprendizado para treinamento          |
 | `model_name` | `model.pth` | Nome do arquivo do modelo treinado      |	
+
+#### Estrutura de Diretórios para Resultados
+
+```
+results/
+│
+└── model_name/
+│   ├── model.pth
+│   ├── model_results.csv
+│   └── model_results.png
+|
+└── ...
+```
 
 ### Predição
 

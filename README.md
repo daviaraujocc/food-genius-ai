@@ -27,17 +27,6 @@ FoodGeniusAI is an AI-powered food classification system that instantly identifi
 - 🚀 Production-Ready: Deployable with BentoML for scalable serving
 - 📱 REST API Support: Easy integration with any application
 
-### 🎯 Model Details
-- Architecture: EfficientNetB2
-- Framework: PyTorch
-- Accuracy: 80%
-- Training: 10 epochs with Adam optimizer (lr=0.001, batch_size=32)
-
-## 🤗 Try it Now! 🤗
-Try out FoodGeniusAI instantly on Hugging Face Spaces:
-
-[FoodGeniusAI on Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
-
 ### 🛠️ Core Technologies
 
 - **ML & Training**
@@ -53,6 +42,12 @@ Try out FoodGeniusAI instantly on Hugging Face Spaces:
 - **Infrastructure**
   - ⚓ Kubernetes: Container orchestration at scale
   - 📈 Prometheus & Grafana: Real-time metrics and visualization
+
+### 🤗 Try it Now! 🤗
+Try out FoodGeniusAI instantly on Hugging Face Spaces:
+
+[FoodGeniusAI on Hugging Face](https://huggingface.co/spaces/daviaraujocc/foodgeniusai)
+
 
 ## Glossary
 - [Requirements](#-requirements-)
@@ -203,6 +198,19 @@ Results for the training process including accuracy, loss will be saved in the `
 | `device`     | `cuda`                                    | Device for training (`cuda` or `cpu`) |
 | `learning_rate`         | `0.001`                                   | Learning rate for training          |
 | `model_name` | `model.pth` | Name of the trained model file      |	
+
+#### Model Output Directory Structure
+
+```
+results/
+│
+└── model_name/
+│   ├── model.pth
+│   ├── model_results.csv
+│   └── model_results.png
+|
+└── ...
+```
 
 ### Prediction
 
