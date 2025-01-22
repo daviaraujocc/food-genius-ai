@@ -13,7 +13,7 @@
 <br>
 
 ## 📖 Introduction 📖
-FoodGeniusAI is an AI-powered application that uses Pre trained EfficientNetB2 to classify food images. It can identify the type of food and determine if the image contains food.
+FoodGeniusAI is an AI-powered application that uses a pre-trained EfficientNetB2 to classify food images. It can identify the type of food and determine if the image contains food. The application leverages BentoML as a framework for deploying the model in production environments.
 
 <div align="center">
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   

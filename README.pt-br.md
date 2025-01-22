@@ -13,14 +13,14 @@
 <br>
 
 ## 📖 Introdução 📖
-FoodGeniusAI é uma aplicação alimentada por IA que usa EfficientNetB2 para classificar imagens de alimentos. Ela pode identificar o tipo de alimento e determinar se a imagem contém alimento.
+FoodGeniusAI é uma aplicação de IA que usa uma EfficientNetB2 pré-treinada para classificar imagens de alimentos. Ela pode identificar o tipo de alimento e determinar se a imagem contém alimento. A aplicação utiliza BentoML como framework para implantar o modelo em ambientes de produção.
 
 <div align="center">
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
 ### 📊 Modelos 📊
-FoodGeniusAI usa dois modelos principais para classificação:
+Existem dois modelos principais usados para classificação no FoodGeniusAI:
 
 1. **Modelo Alimento ou Não-Alimento (Food5K)**
     - Este modelo classifica imagens como alimento ou não-alimento usando o dataset Food5K.
@@ -29,6 +29,10 @@ FoodGeniusAI usa dois modelos principais para classificação:
     - Este modelo classifica imagens em 101 diferentes tipos de alimentos usando o dataset Food101.
 
 Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`.
+
+#### 📈 Desempenho 📈
+
+Ambos os modelos foram treinados usando o otimizador Adam com uma taxa de aprendizado de 0.001 e um tamanho de batch de 32 por 10 epochs, alcançando 80% de precisão.
 
 ### 🛠️ Tecnologias Utilizadas 🛠️
 
@@ -71,7 +75,7 @@ cd FoodGeniusAI
 
 Instale as dependências:
 ```bash
-pip install -r requirements/cpu-requirements.txt
+pip install -r requirements/test.txt
 ```
 
 Sirva o serviço BentoML:
@@ -162,6 +166,13 @@ Você também pode experimentar a aplicação FoodGeniusAI no Hugging Face Space
 
 ## 🏋️‍♂️ Treinamento e Predição 🏋️‍♂️
 
+Antes de executar os scripts/notebooks, é recomendável criar um novo ambiente:
+
+```bash
+conda env create -f environment.yml
+conda activate foodgenius
+```
+
 ### Treinamento
 
 Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
@@ -176,7 +187,9 @@ Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
     python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
     ```
 
-Os resultados do processo de treinamento serão salvos no diretório `results`.
+> Use o dispositivo `cuda` se você tiver uma GPU compatível disponível.
+
+Os resultados do processo de treinamento, incluindo precisão e perda, serão salvos no diretório `results`.
 
 ### Predição
 
@@ -195,13 +208,6 @@ Você pode fazer predições usando o script `predict.py`. Aqui estão os passos
 ## 📓 Jupyter Notebooks 📓
 
 Este repositório inclui vários Jupyter Notebooks que demonstram os processos de treinamento e predição usando EfficientNetB2.
-
-Antes de rodar os notebooks, instale as dependências usando conda ou venv:
-
-```bash
-conda env create -f environment.yml
-conda activate foodgenius
-```
 
 ### Notebooks de Treinamento
 
@@ -285,4 +291,3 @@ kubectl port-forward svc/grafana -n monitoring 3000:3000
 
 ## 📝 Autor
 **Davi Araujo (@daviaraujocc)**
-`````
