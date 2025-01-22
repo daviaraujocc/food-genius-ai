@@ -27,6 +27,29 @@ FoodGeniusAI is an AI-powered food classification system that instantly identifi
 - 🚀 Production-Ready: Deployable with BentoML for scalable serving
 - 📱 REST API Support: Easy integration with any application
 
+### 📊 Models
+
+FoodGeniusAI uses two EfficientNetB2 models for food classification:
+
+#### 1. Food or Non-Food Detector (Food5K Model)
+- **Purpose**: Determines if image contains food
+- **Performance**: 90% accuracy
+- **Input**: 224x224 RGB images
+- **Output**: Binary classification (food/non-food)
+- **Training**: Food5K dataset (5,000 images)
+
+#### 2. Food101 Classifier
+- **Purpose**: Identifies specific food category
+- **Performance**: 80% accuracy
+- **Input**: 224x224 RGB images
+- **Output**: 101 food categories
+- **Training**: Food101 dataset (101,000 images)
+
+#### Classification Pipeline
+1. Image → Food/Non-Food Detection
+2. If food detected → Food Category Classification
+3. Return prediction score for each category
+
 ### 🛠️ Core Technologies
 
 - **ML & Training**
@@ -167,6 +190,7 @@ You can train the models using the `train.py` script. Here are the steps:
     --model food_or_nonfood \
     --epochs 5 \
     --model_name pretrained_effnetb2_food_or_nonfood.pth \ 
+    --split_size 1 \
     --batch_size 32 \ 
     --learning_rate 0.001 \
     --device cuda # or cpu
