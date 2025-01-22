@@ -21,12 +21,14 @@ class FoodGenius:
         device = os.getenv("BENTOML_DEVICE", "cpu")
         self.device = torch.device(device)
 
+        food101_model_path = os.getenv("FOOD101_MODEL_PATH", "models/pretrained_effnetb2_food_101.pth")
+        food_nonfood_model_path = os.getenv("FOOD_NONFOOD_MODEL_PATH", "models/pretrained_effnetb2_food_or_nonfood.pth")
 
         effnetb2_101_model, effnetb2_101_transforms = model_builder.create_effnetb2_model(num_classes=len(class_names))
-        effnetb2_101_model.load_state_dict(torch.load(f='models/pretrained_effnetb2_food_101.pth', map_location='cpu'))
+        effnetb2_101_model.load_state_dict(torch.load(f=food101_model_path, map_location=device))
 
         effnetb2_model_food_nonfood, effnetb2_food_nonfood_transforms = model_builder.create_effnetb2_model(num_classes=len(food_nonfood_class_names))
-        effnetb2_model_food_nonfood.load_state_dict(torch.load(f='models/pretrained_effnetb2_food_or_nonfood.pth', map_location='cpu'))
+        effnetb2_model_food_nonfood.load_state_dict(torch.load(f=food_nonfood_model_path, map_location=device))
 
         self.effnetb2_101_model = effnetb2_101_model
         self.effnetb2_101_transforms = effnetb2_101_transforms
