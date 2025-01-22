@@ -1,5 +1,5 @@
 adminUser: admin
-adminPassword: qwerty1234
+adminPassword: admin
 sidecar:
   dashboards:
     enabled: true
