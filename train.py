@@ -10,28 +10,40 @@ import matplotlib.pyplot as plt
 import os
 import subprocess
 from datetime import datetime
+from timeit import default_timer as timer
 
 def plot_results(results, model_name):
     epochs = range(len(results["train_loss"]))
-    plt.figure(figsize=(10, 7))
+    
+    plt.figure(figsize=(14, 5))
+    
+    # Plot training and testing loss
+    plt.subplot(1, 2, 1)
     plt.plot(epochs, results["train_loss"], label="Train Loss")
     plt.plot(epochs, results["test_loss"], label="Test Loss")
+    plt.title(f"Training and Testing Loss for {model_name}")
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+    plt.legend()
+    
+    # Plot training and testing accuracy
+    plt.subplot(1, 2, 2)
     plt.plot(epochs, results["train_acc"], label="Train Accuracy")
     plt.plot(epochs, results["test_acc"], label="Test Accuracy")
-    plt.title(f"Training and Testing Results for {model_name}")
+    plt.title(f"Training and Testing Accuracy for {model_name}")
     plt.xlabel("Epochs")
-    plt.ylabel("Loss/Accuracy")
+    plt.ylabel("Accuracy")
     plt.legend()
-
+    
     results_dir = "results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
-
-    # Get current date and time
+    
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"{model_name}_results_{current_time}.png"
     plt.savefig(os.path.join(results_dir, filename))
     print(f"Results saved to {os.path.join(results_dir, filename)}")
+    plt.close()
 
 
 def download_food5k():
@@ -62,7 +74,8 @@ def train_food_or_nonfood(epochs, model_path, model_name, device, batch_size, sp
 
     optimizer = torch.optim.Adam(effnetb2_5k_food_or_nonfood.parameters(), lr=0.001)
     loss_fn = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
-
+    
+    start_time = timer()
     effnetb2_5k_nonfood_results = engine.train(
         model=effnetb2_5k_food_or_nonfood.to(device),
         train_dataloader=train_dataloader_food5k,
@@ -72,6 +85,9 @@ def train_food_or_nonfood(epochs, model_path, model_name, device, batch_size, sp
         epochs=epochs,
         device=device
     )
+    end_time = timer()
+    training_time = end_time - start_time
+    print(f"Training time for {model_name}: {training_time:.2f} seconds")
 
     utils.save_model(model=effnetb2_5k_food_or_nonfood, target_dir=model_path, model_name=model_name)
     plot_results(effnetb2_5k_nonfood_results, model_name)
@@ -80,15 +96,20 @@ def train_food101(epochs, model_path, model_name, device, batch_size, split_size
     data_dir = Path("data")
 
     effnetb2_101, effnetb2_transforms = model_builder.create_effnetb2_model(num_classes=101)
+    food_101_transforms = transforms.Compose([
+        transforms.TrivialAugmentWide(), effnetb2_transforms,
+    ])
 
-    train_set = datasets.Food101(root=data_dir, split="train", transform=effnetb2_transforms, download=True)
-    val_set = datasets.Food101(root=data_dir, split="test", transform=effnetb2_transforms, download=True)
+
+    train_set = datasets.Food101(root=data_dir, split="train", transform=food_101_transforms, download=True)
+    val_set = datasets.Food101(root=data_dir, split="test", transform=food_101_transforms, download=True)
 
     train_dataloader_food101, test_dataloader_food101, class_names = data_setup.create_dataloaders_from_dataset(train_set, val_set, batch_size, 2, split_size=split_size)
     
     optimizer = torch.optim.Adam(effnetb2_101.parameters(), lr=0.001)
     loss_fn = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
 
+    start_time = timer()
     effnetb2_101_results = engine.train(
         model=effnetb2_101.to(device),
         train_dataloader=train_dataloader_food101,
@@ -98,6 +119,9 @@ def train_food101(epochs, model_path, model_name, device, batch_size, split_size
         epochs=epochs,
         device=device
     )
+    end_time = timer()
+    training_time = end_time - start_time
+    print(f"Training time for {model_name}: {training_time:.2f} seconds")
 
     utils.save_model(model=effnetb2_101, target_dir=model_path, model_name=model_name)
     plot_results(effnetb2_101_results, model_name)
