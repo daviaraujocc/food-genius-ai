@@ -330,3 +330,7 @@ kubectl port-forward svc/grafana -n monitoring 3000:3000
 
 ## 📝 Author
 **Davi Araujo (@daviaraujocc)**
+
+## TODOS
+
+- [ ] Automate training/deploy via ArgoCD Workflows + GitOps
