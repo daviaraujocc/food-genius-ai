@@ -105,10 +105,10 @@ bentoml serve
 
 ### Docker (Recommended)
 
-> For GPU use bentofile.gpu.yaml
-> Note that to run with GPU you will need to have [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) setup.
-
 To run the service in a container, you can use the following commands:
+
+
+For CPU:
 
 ```bash
 bentoml build -f bentofile.yaml
@@ -121,6 +121,22 @@ bentoml containerize foodgenius-service:latest
 ```bash
 docker run -p 3000:3000 foodgenius-service:$(bentoml get foodgenius-service:latest | yq -r ".version")
 ```
+
+For GPU:
+
+```bash
+bentoml build -f bentofile.gpu.yaml
+```
+
+```bash
+bentoml containerize foodgenius-service-gpu:latest 
+```
+
+```bash
+docker run --gpus all -p 3000:3000 foodgenius-service-gpu:$(bentoml get foodgenius-service-gpu:latest | yq -r ".version")
+```
+
+> Note that to run with GPU you will need to have [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) setup.
 
 ### Python API
 

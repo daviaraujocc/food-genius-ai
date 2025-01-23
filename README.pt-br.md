@@ -1,7 +1,7 @@
 <div align="center">
     <h1 align="center">Food Genius AI</h1>
     <br>
-    <strong>Uma aplicação poderosa de IA construída usando EfficientNetB2 que pode detectar o tipo de alimento em uma imagem e determinar se a imagem contém alimento ou não.<br></strong>
+    <strong>Uma aplicação de IA construída usando EfficientNetB2 que pode detectar o tipo de alimento em uma imagem e determinar se a imagem contém alimento ou não.<br></strong>
     <i>Desenvolvido com BentoML 🍱 e PyTorch 🔥</i>
     <br>
 </div>
@@ -104,18 +104,15 @@ bentoml serve
 Você pode então abrir seu navegador em http://127.0.0.1:3000 e interagir com o serviço através do Swagger UI.
 
 
-### Containers 
-
-> Para uso de GPU, utilize `bentofile.gpu.yaml`
-> Note que para rodar com GPU você precisará ter [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) configurado.
+### Docker (Recomendado)
 
 Para executar o serviço em um container, você pode usar os seguintes comandos:
+
+Para CPU:
 
 ```bash
 bentoml build -f bentofile.yaml
 ```
-
-> Executar este comando criará no home do usuário, o diretório `bentoml` com os arquivos do serviço.
 
 ```bash
 bentoml containerize foodgenius-service:latest
@@ -124,6 +121,22 @@ bentoml containerize foodgenius-service:latest
 ```bash
 docker run -p 3000:3000 foodgenius-service:$(bentoml get foodgenius-service:latest | yq -r ".version")
 ```
+
+Para GPU:
+
+```bash
+bentoml build -f bentofile.gpu.yaml
+```
+
+```bash
+bentoml containerize foodgenius-service-gpu:latest 
+```
+
+```bash
+docker run --gpus all -p 3000:3000 foodgenius-service-gpu:$(bentoml get foodgenius-service-gpu:latest | yq -r ".version")
+```
+
+> Note que para rodar com GPU você precisará ter [nvidia-container-runtime](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) configurado.
 
 ### API Python
 
