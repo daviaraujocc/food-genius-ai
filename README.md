@@ -53,7 +53,7 @@ FoodGeniusAI uses two EfficientNetB2 models for food classification:
 ### 🛠️ Core Technologies
 
 - **ML & Training**
-  - 🧠 EfficientNetB2: Advanced CNN for image classification
+  - 🧠 EfficientNetB2: Lightweight and efficient CNN for image classification
   - 🔥 PyTorch: Deep learning framework for model training
   - 📊 Jupyter: Interactive development and model experimentation
 
@@ -228,12 +228,16 @@ Results for the training process including accuracy, loss will be saved in the `
 ```
 results/
 │
-└── model_name/
-│   ├── model.pth
-│   ├── model_results.csv
-│   └── model_results.png
-|
-└── ...
+└── food101/
+|   └── model_name
+|       ├── model.pth
+│       ├── model_results.csv
+│       └── model_results.png
+└── food_or_nonfood/
+|   └── model_name
+|       ├── model.pth
+│       ├── model_results.csv
+│       └── model_results.png
 ```
 
 ### Prediction

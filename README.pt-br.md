@@ -13,36 +13,58 @@
 <br>
 
 ## 📖 Introdução 📖
-FoodGeniusAI é uma aplicação alimentada por IA que usa EfficientNetB2 para classificar imagens de alimentos. Ela pode identificar o tipo de alimento e determinar se a imagem contém alimento.
+FoodGeniusAI é uma aplicação de IA que usa EfficientNetB2 para classificar imagens de alimentos. Ela pode identificar o tipo de alimento e determinar se a imagem contém alimento.
 
 <div align="center">
     <img src="https://github.com/daviaraujocc/food-genius-ai/blob/main/assets/images/demo.gif" alt="demo" >   
 </div>
 
-### 📊 Modelos 📊
-FoodGeniusAI usa dois modelos principais para classificação:
+### ✨ Principais Características
 
-1. **Modelo Alimento ou Não-Alimento (Food5K)**
-    - Este modelo classifica imagens como alimento ou não-alimento usando o dataset Food5K.
+- 🍔 Detecção Instantânea: Distingue automaticamente imagens de alimentos e não-alimentos
+- 🔍 101 Categorias: Reconhece uma grande variedade de pratos com 80% de precisão
+- ⚡ Processamento Rápido: Otimizado para classificação em tempo real
+- 🚀 Pronto para Produção: Implantável com BentoML para serviço escalável
+- 📱 Suporte à API REST: Fácil integração com qualquer aplicação
 
-2. **Modelo Food101**
-    - Este modelo classifica imagens em 101 diferentes tipos de alimentos usando o dataset Food101.
+### 📊 Modelos
 
-Ambos os modelos são baseados na arquitetura EfficientNetB2 e foram treinados usando PyTorch. Modelos pré-treinados estão localizados no diretório `models`.
+FoodGeniusAI utiliza dois modelos EfficientNetB2 para classificação de alimentos:
 
-### 🛠️ Tecnologias Utilizadas 🛠️
+#### 1. Detector de Alimento ou Não-Alimento (Modelo Food5K)
+- **Objetivo**: Determina se a imagem contém alimento
+- **Desempenho**: 90% de precisão
+- **Entrada**: Imagens RGB 224x224
+- **Saída**: Classificação binária (alimento/não-alimento)
+- **Treinamento**: Dataset Food5K (5.000 imagens)
 
-FoodGeniusAI utiliza várias tecnologias poderosas para fornecer sua funcionalidade:
+#### 2. Classificador Food101
+- **Objetivo**: Identifica categoria específica do alimento
+- **Desempenho**: 80% de precisão
+- **Entrada**: Imagens RGB 224x224
+- **Saída**: 101 categorias de alimentos
+- **Treinamento**: Dataset Food101 (101.000 imagens)
 
-- **EfficientNetB2**: Uma arquitetura de rede neural convolucional de última geração usada para classificação de imagens.
-- **PyTorch**: Uma biblioteca de aprendizado de máquina de código aberto usada para treinar os modelos.
-- **BentoML**: Um framework para servir modelos de aprendizado de máquina, facilitando a implantação e gerenciamento dos modelos em ambientes de produção.
-- **Jupyter Notebooks**: Notebooks interativos usados para treinar e testar os modelos.
-- **Docker**: Uma plataforma para containerizar aplicações, garantindo consistência em diferentes ambientes.
-- **Kubernetes**: Uma plataforma de orquestração para implantar, escalar e gerenciar aplicações containerizadas.
-- **Prometheus**: Um sistema de monitoramento usado para coletar métricas dos modelos implantados.
-- **Grafana**: Uma ferramenta de visualização usada para exibir métricas coletadas pelo Prometheus.
-- **Gradio**: Uma biblioteca para criar interfaces de usuário interativas para modelos de aprendizado de máquina.
+#### Pipeline de Classificação
+1. Imagem → Detecção de Alimento/Não-Alimento
+2. Se alimento detectado → Classificação da Categoria do Alimento
+3. Retorna pontuação de predição para cada categoria
+
+### 🛠️ Tecnologias Principais
+
+- **ML & Treinamento**
+  - 🧠 EfficientNetB2: Modelo CNN leve e eficiente para classificação de imagens
+  - 🔥 PyTorch: Framework de deep learning para treinamento
+  - 📊 Jupyter: Desenvolvimento interativo e experimentação
+
+- **Interface & Serviço**
+  - 🎨 Gradio: Interface web interativa para demonstração
+  - 🍱 BentoML: Serviço e implantação de modelos ML
+  - 🐳 Docker: Containerização para implantações consistentes
+
+- **Infraestrutura**
+  - ⚓ Kubernetes: Orquestração de containers em escala
+  - 📈 Prometheus & Grafana: Métricas em tempo real e visualização
 
 ## Glossário
 - [Requisitos](#-requisitos-)
@@ -162,35 +184,72 @@ Você também pode experimentar a aplicação FoodGeniusAI no Hugging Face Space
 
 ## 🏋️‍♂️ Treinamento e Predição 🏋️‍♂️
 
+Antes de executar os scripts/notebooks, é recomendado criar um novo ambiente:
+
+```bash
+conda env create -f environment.yml
+conda activate foodgenius
+```
+
 ### Treinamento
 
 Você pode treinar os modelos usando o script `train.py`. Aqui estão os passos:
 
-1. Treine o modelo `food_or_nonfood`:
+1. Treinar o modelo `food_or_nonfood`:
     ```bash
-    python train.py --model food_or_nonfood --epochs 10 --model_name pretrained_effnetb2_food_or_nonfood.pth --batch_size 32 --device cpu
+    python train.py \ 
+    --model food_or_nonfood \
+    --epochs 5 \
+    --model_name pretrained_effnetb2_food_or_nonfood.pth \ 
+    --split_size 1 \
+    --batch_size 32 \ 
+    --learning_rate 0.001 \
+    --device cuda # ou cpu
     ```
 
-2. Treine o modelo `food101`:
+2. Treinar o modelo `food101`:
     ```bash
-    python train.py --model food101 --epochs 5 --model_name pretrained_effnetb2_food101.pth --split_size 0.2 --batch_size 32 --device cpu
+    python train.py \ 
+    --model food101 \ 
+    --epochs 10 \ 
+    --model_name pretrained_effnetb2_food101.pth \ 
+    --split_size 0.2 \ 
+    --batch_size 32 \ 
+    --learning_rate 0.001 \
+    --device cuda # ou cpu
     ```
 
-Os resultados do processo de treinamento serão salvos no diretório `results`.
+> Use device `cuda` se você tiver uma GPU compatível disponível.
 
-### Predição
+Os resultados do processo de treinamento incluindo acurácia e perda serão salvos no diretório `results`.
 
-Você pode fazer predições usando o script `predict.py`. Aqui estão os passos:
+#### Hiperparâmetros de Treinamento
 
-1. Predição usando o modelo `food_or_nonfood`:
-    ```bash
-    python predict.py --model food_or_nonfood --image path/to/image.jpg --model_path models/pretrained_effnetb2_food_or_nonfood.pth --device cpu
-    ```
+| Parâmetro     | Padrão                                      | Descrição       |
+|---------------|--------------------------------------------------|---------------------|
+| `epochs`    | `5`                                       | Número de épocas para treinamento       |
+| `batch_size` | `32`                                      | Tamanho do lote para treinamento             |
+| `split_size` | `0.2`                                     | Tamanho da divisão treino-teste |
+| `device`     | `cuda`                                    | Dispositivo para treinamento (`cuda` ou `cpu`) |
+| `learning_rate`         | `0.001`                                   | Taxa de aprendizagem          |
+| `model_name` | `model.pth` | Nome do arquivo do modelo treinado      |	
 
-2. Predição usando o modelo `food101`:
-    ```bash
-    python predict.py --model food101 --image path/to/image.jpg --model_path models/pretrained_effnetb2_food101.pth --class_names_path class_names.txt --device cpu
-    ```
+#### Estrutura do Diretório de Saída do Modelo
+
+```
+results/
+│
+└── food101/
+|   └── model_name
+|       ├── model.pth
+│       ├── model_results.csv
+│       └── model_results.png
+└── food_or_nonfood/
+|   └── model_name
+|       ├── model.pth
+│       ├── model_results.csv
+│       └── model_results.png
+```
 
 ## 📓 Jupyter Notebooks 📓
 
@@ -244,37 +303,16 @@ kubectl apply -f manifests/deployment.yaml
 
 BentoML fornece recursos de observabilidade integrados, incluindo métricas do Prometheus. Você pode acessar essas métricas no endpoint `/metrics`.
 
-Para ter um stack de monitoramento no Kubernetes, você pode seguir os seguintes passos:
+Para instalar o stack de monitoramento no kubernetes, você pode seguir os seguintes passos:
 
-1. Instale o Prometheus Operator
+### Configuração Rápida
 
 ```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update prometheus-community
-
-helm install prometheus prometheus-community/kube-prometheus-stack \
--f ./observability/prometheus-values.yaml \
---namespace monitoring --create-namespace
+chmod +x scripts/setup_monitoring.sh; ./scripts/setup_monitoring.sh
 ```
+Este script instalará o stack prometheus + grafana no namespace monitoring.
 
-2. Instale o Grafana
-
-```bash
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update grafana
-
-helm install grafana grafana/grafana \
--f ./observability/grafana-values.yaml \
---namespace monitoring --create-namespace
-``` 
-
-3. Aplique as dependências
-
-```bash
-kubectl apply -f observability/podmonitor.yaml
-```
-
-4. Verifique no Grafana
+Acesse o dashboard do grafana (usuário/senha padrão é `admin`):
 
 ```bash
 kubectl port-forward svc/grafana -n monitoring 3000:3000
@@ -282,7 +320,5 @@ kubectl port-forward svc/grafana -n monitoring 3000:3000
 
 ![](assets/images/grafana.jpg)
 
-
 ## 📝 Autor
 **Davi Araujo (@daviaraujocc)**
-`````
